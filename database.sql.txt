@@ -1,0 +1,50 @@
+
+CREATE TABLESPACE PenjualanTiket
+DATAFILE 'D:\PraktikumDataBase\sistem_tiket.dbf'
+SIZE 30M;
+
+CREATE USER eri_07057_
+IDENTIFIED BY erii
+DEFAULT TABLESPACE PenjualanTiket
+QUOTA 30M ON PenjualanTiket;
+
+GRANT ALL PRIVILEGES TO eri_07057_;
+
+create table pembeli
+( 
+id_pembeli	NUMBER(38)	NOT NULL,
+nik		NUMBER(38),
+nama_pembeli	VARCHAR2(50),
+jenis_kelamin	VARCHAR2(15),
+alamat_07057	VARCHAR2(100),
+constraint pk_pembeli primary key (id_pembeli)
+);
+
+create table jenis_tiket
+(
+id_tiket	INTEGER		NOT NULL,
+tipe_tiket	VARCHAR2(8),
+total_seat	NUMBER(6),
+match		VARCHAR2(30),
+match_day	DATE
+constraint pk_tiket primary key(id_tiket)
+);
+
+create table pembayaran
+(
+id_tiket	NUMBER(38),
+jumlah_tiket	NUMBER(6),
+harga_total	NUMBER(12),
+tgl_pembayaran	DATE
+id_pembayaran	NUMBER(38)	NOT NULL,
+id_pembeli	NUMBER(38),
+constraint pk_pembayaran primary key (id_pembayaran)
+);
+
+ALTER TABLE pembayaran 
+add constraint fk_pembeli FOREIGN KEY (id_pembeli)
+references pembeli (id_pembeli)
+add constraint fk_tiket FOREIGN KEY (id_tiket)
+references jenis_tiket (id_tiket)
+add constraint fk_pembayaran FOREIGN KEY(id_pembayaran)
+references pembayaran(id_pembayaran);
